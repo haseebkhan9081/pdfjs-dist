@@ -5254,7 +5254,7 @@ exports.PDFWorkerUtil = PDFWorkerUtil;
 {
   if (_is_node.isNodeJS && typeof require === "function") {
     PDFWorkerUtil.isWorkerDisabled = true;
-    PDFWorkerUtil.fallbackWorkerSrc = "./pdf.worker.js";
+    PDFWorkerUtil.fallbackWorkerSrc = "./pdf.worker.mjs";
   } else if (typeof document === "object") {
     var _document, _document$currentScri;
     const pdfjsFilePath = (_document = document) === null || _document === void 0 ? void 0 : (_document$currentScri = _document.currentScript) === null || _document$currentScri === void 0 ? void 0 : _document$currentScri.src;
@@ -5331,7 +5331,7 @@ class PDFWorker {
         if (!PDFWorkerUtil.isSameOrigin(window.location.href, workerSrc)) {
           workerSrc = PDFWorkerUtil.createCDNWrapper(new URL(workerSrc, window.location).href);
         }
-        const worker = new Worker(workerSrc);
+        const worker = new Worker('./pdf.worker.mjs');
         const messageHandler = new _message_handler.MessageHandler("main", "worker", worker);
         const terminateEarly = () => {
           worker.removeEventListener("error", onWorkerError);
@@ -5442,7 +5442,7 @@ class PDFWorker {
   }
   static get workerSrc() {
     if (_worker_options.GlobalWorkerOptions.workerSrc) {
-      return _worker_options.GlobalWorkerOptions.workerSrc;
+      return './pdf.worker.mjs';
     }
     if (PDFWorkerUtil.fallbackWorkerSrc !== null) {
       if (!_is_node.isNodeJS) {
@@ -5467,10 +5467,10 @@ class PDFWorker {
         return mainWorkerMessageHandler;
       }
       if (_is_node.isNodeJS && typeof require === "function") {
-        const worker = eval("require")(this.workerSrc);
+        const worker = eval("require")('./pdf.worker.mjs');
         return worker.WorkerMessageHandler;
       }
-      await (0, _display_utils.loadScript)(this.workerSrc);
+      await (0, _display_utils.loadScript)('./pdf.worker.mjs');
       return window.pdfjsWorker.WorkerMessageHandler;
     };
     return (0, _util.shadow)(this, "_setupFakeWorkerGlobal", loader());
@@ -11489,7 +11489,7 @@ exports.GlobalWorkerOptions = void 0;
 const GlobalWorkerOptions = Object.create(null);
 exports.GlobalWorkerOptions = GlobalWorkerOptions;
 GlobalWorkerOptions.workerPort = GlobalWorkerOptions.workerPort === undefined ? null : GlobalWorkerOptions.workerPort;
-GlobalWorkerOptions.workerSrc = GlobalWorkerOptions.workerSrc === undefined ? "" : GlobalWorkerOptions.workerSrc;
+GlobalWorkerOptions.workerSrc = GlobalWorkerOptions.workerSrc === undefined ? './pdf.worker.mjs' : GlobalWorkerOptions.workerSrc;
 
 /***/ }),
 /* 145 */
